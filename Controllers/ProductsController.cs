@@ -36,8 +36,8 @@ namespace WebApi.Controllers
 
         
 
-        [AllowAnonymous]
-        [HttpPost("add")]
+        [HttpPost("")]
+        
         public IActionResult Add([FromBody]ProductModel model)
         {
             // map model to entity
@@ -61,6 +61,14 @@ namespace WebApi.Controllers
         {
             var products = _productService.GetAll();
             var model = _mapper.Map<IList<ProductModel>>(products);
+            return Ok(model);
+        }
+
+        [HttpGet("user/{user}")]
+        public IActionResult GetByUser(int user)
+        {
+            var product = _productService.GetByUser(user);
+            var model = _mapper.Map<ProductModel>(product);
             return Ok(model);
         }
 

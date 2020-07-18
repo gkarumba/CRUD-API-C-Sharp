@@ -10,6 +10,7 @@ namespace WebApi.Services
     {
         IEnumerable<Product> GetAll();
         Product GetById(int id);
+        Product GetByUser(int user);
         Product Create(Product product, string name, string description, int user, int price);
         void Update(Product product, string name, string description, int user, int price);
         void Delete(int id);
@@ -66,8 +67,8 @@ namespace WebApi.Services
             if (!string.IsNullOrWhiteSpace(productParam.Name) && productParam.Name != product.Name)
             {
                 // throw error if the new Name is already taken
-                if (_context.Products.Any(x => x.Name == productParam.Name))
-                    throw new AppException("Name " + productParam.Name + " is already taken");
+                // if (_context.Products.Any(x => x.Name == productParam.Name))
+                //     throw new AppException("Name " + productParam.Name + " is already taken");
 
                 product.Name = productParam.Name;
             }
@@ -78,6 +79,9 @@ namespace WebApi.Services
 
             if (!string.IsNullOrWhiteSpace(productParam.Description))
                 product.Description = productParam.Description;
+                product.User = productParam.User;
+                product.Price = productParam.Price;
+
 
             
 
@@ -93,6 +97,11 @@ namespace WebApi.Services
                 _context.Products.Remove(product);
                 _context.SaveChanges();
             }
+        }
+
+        public Product GetByUser(int user)
+        {
+            return _context.Products.Find(user);
         }
 
         // private helper methods
